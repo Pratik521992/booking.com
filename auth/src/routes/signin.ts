@@ -22,9 +22,9 @@ router.post('/api/users/signin', [
     async (req: Request, res: Response) => {
         const { email, password } = req.body;
         const user = await User.findOne({ email });
-        if(!user) throw new BadRequestError('Invalid Credentials');
+        if(!user) throw new BadRequestError('Invalid username or password');
         const passwordMatch = await Password.compare(user.password, password);
-        if(!passwordMatch) throw new BadRequestError('Invalid Credentials');
+        if(!passwordMatch) throw new BadRequestError('Invalid username or password');
         if (!process.env.JWT_KEY) throw new Error('JWT not defined');
         const userJwt = jwt.sign({
             id: user.id,
